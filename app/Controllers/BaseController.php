@@ -44,7 +44,16 @@ abstract class BaseController extends Controller
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
-
+        if (uri(1) != "install") {
+            try {
+                $xml = simplexml_load_file(APPPATH . "/../note.xml");
+                if ($xml->install == 'true') {
+                    header("location:" . base_url() . "/install");
+                    exit;
+                }
+            } catch (\Throwable $th) {
+            }
+        }
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();

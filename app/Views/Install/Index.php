@@ -13,7 +13,7 @@
                 <?php if (session()->getFlashdata('msg')) {
                     echo showAlert(session()->getFlashdata('msg'), session()->getFlashdata('bg'));
                 } ?>
-                <form method="POST">
+                <form method="POST" autocomplete="off">
                     <?= csrf_field() ?>
                     <div class="mb-3">
                         <label for="host" class="form-label">Host</label>

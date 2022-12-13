@@ -6,11 +6,14 @@ class Install extends BaseController
 {
     public function index()
     {
-        if (db_connect()->getDatabase() != '') {
-            session()->setFlashdata('msg', 'Aplikasi siap digunakan');
-            session()->setFlashdata('bg', 'alert-success');
+        try {
+            $xml = simplexml_load_file(APPPATH . "/../note.xml");
+            if ($xml->install == 'false') {
+                return redirect()->to(base_url());
+            }
+        } catch (\Throwable $th) {
             return redirect()->to(base_url());
-        };
+        }
         $data = [
             'title' => "Install",
             'validation' => \Config\Services::validation(),
@@ -41,7 +44,7 @@ class Install extends BaseController
                 return redirect()->back()->withInput();
             }
         } catch (\Throwable $th) {
-            session()->setFlashdata('msg', 'Koneksi ke database tidak ditemukan : ' . $th->getMessage());
+            session()->setFlashdata('msg', 'Koneksi ke database tidak ditemukan');
             session()->setFlashdata('bg', 'alert-danger');
             return redirect()->back()->withInput();
         }
@@ -57,6 +60,7 @@ class Install extends BaseController
             ini_set('memory_limit', '-1');
             $migrate = \Config\Services::migrations();
             $migrate->latest();
+            unlink(APPPATH . "/../note.xml");
         } catch (\Throwable $e) {
             session()->setFlashdata('msg', 'Terjadi Kesalahan Pada Saat Memuat Query, Mohon coba lagi');
             session()->setFlashdata('bg', 'alert-danger');
@@ -69,7 +73,7 @@ class Install extends BaseController
     }
 
 
-    function _write_env($reset = false)
+    function _write_env()
     {
         $text = "
 database.default.hostname = " .  $this->request->getPost('host') . "

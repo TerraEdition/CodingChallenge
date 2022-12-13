@@ -9,7 +9,7 @@
         <?php if (session()->getFlashdata('msg')) {
             echo showAlert(session()->getFlashdata('msg'), session()->getFlashdata('bg'));
         } ?>
-        <form class="form form-vertical" action="<?= url('cancel') ?>" method="post">
+        <form class="form form-vertical" action="<?= url('cancel') ?>" method="post" autocomplete="off">
             <?= csrf_field() ?>
             <div class="card-header">
                 <div class="btnHeader">

@@ -9,7 +9,7 @@
         <?php if (session()->getFlashdata('msg')) {
             echo showAlert(session()->getFlashdata('msg'), session()->getFlashdata('bg'));
         } ?>
-        <form class="form form-vertical" action="<?= current_url() ?>" method="post">
+        <form class="form form-vertical" action="<?= current_url() ?>" method="post" autocomplete="off">
             <?= csrf_field() ?>
             <input type="hidden" name="_method" value="PUT">
             <div class="card-header">
